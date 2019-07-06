@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // for AngularFireDatabase
-import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireDatabase } from 'angularfire2/database';
+//import { AngularFireDatabaseModule } from 'angularfire2/database';
+//import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase';
 
 @Injectable({
@@ -9,10 +9,14 @@ import * as firebase from 'firebase';
 })
 export class UserService {
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor() {}
 
   save(user: firebase.User){
-    this.db.database.ref('user/'+user.uid).update({
+    // this.db.database.ref('user/'+user.uid).update({
+    //   name: user.displayName,
+    //   email: user.email
+    // });
+    firebase.database().ref('user/' + user.uid).set({
       name: user.displayName,
       email: user.email
     });
