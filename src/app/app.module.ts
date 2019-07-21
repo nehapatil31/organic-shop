@@ -1,11 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// for AngularFireDatabase
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { AppComponent } from './app.component';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
@@ -21,6 +23,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthService } from './auth.service';
 import { AuthGuardService as AuthGuard } from './auth-guard.service';
 import { UserService } from './user.service';
+import { AdminAuthGuardService } from './admin-auth-guard.service';
 
 
 @NgModule({
@@ -40,7 +43,7 @@ import { UserService } from './user.service';
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
+    AngularFireDatabaseModule,     
     AngularFireAuthModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
@@ -80,18 +83,19 @@ import { UserService } from './user.service';
       {
         path: 'admin/orders',
         component: AdminOrdersComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, AdminAuthGuardService]
       },
       {
         path: 'my/orders',
         component: MyOrdersComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, AdminAuthGuardService]
       }
     ])
   ],
   providers: [
     AuthService,
     AuthGuard, 
+    AdminAuthGuardService,
     UserService
   ],
   bootstrap: [AppComponent]

@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
-// for AngularFireDatabase
-//import { AngularFireDatabaseModule } from 'angularfire2/database';
-//import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() {}
+  constructor(private db:AngularFireDatabase) { }
 
-  save(user: firebase.User){
-    // this.db.database.ref('user/'+user.uid).update({
-    //   name: user.displayName,
-    //   email: user.email
-    // });
-    firebase.database().ref('user/' + user.uid).set({
+  save(user: firebase.User) {
+    firebase.database().ref('user/' + user.uid).update({
       name: user.displayName,
       email: user.email
     });
+  }
+
+  get(uid: string): Observable<any> {
+    return this.db.object('/user/' + uid).valueChanges();
   }
 }
